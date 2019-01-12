@@ -22,10 +22,12 @@ import com.apifortress.libs.mailer.config.AbstractApifMailSmtpConfig;
  *         specific language governing permissions and limitations
  *         under the License.
  */
-public class DummyApifMailSmtpConfig extends AbstractApifMailSmtpConfig {
+public class PropertiesApifMailSmtpConfig extends AbstractApifMailSmtpConfig {
+
+    public static final String FILENAME = "libmailer.properties";
 
     @Override
     public void init() throws Exception {
-        put(SMTP_HOST,"foo.bar");
+
     }
 }

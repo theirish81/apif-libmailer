@@ -2,9 +2,11 @@ package com.apifortress.lib.mailer;
 
 import com.apifortress.libs.mailer.config.AbstractApifMailSmtpConfig;
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import static org.junit.Assert.assertEquals;
 
@@ -28,13 +30,11 @@ import static org.junit.Assert.assertEquals;
  *         specific language governing permissions and limitations
  *         under the License.
  */
-@Configuration
-@ComponentScan("com.apifortress.libs.mailer")
 public class TestApifSmtpMailSender {
 
     @Test
     public void testConfigInjection(){
-        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(TestApifSmtpMailSender.class);
+        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("dummy-beans.xml");
         AbstractApifMailSmtpConfig config = applicationContext.getBean("mailSmtpConfig", AbstractApifMailSmtpConfig.class);
         assertEquals("DummyApifMailSmtpConfig",config.getClass().getSimpleName());
         assertEquals("foo.bar",config.get("smtpHost"));

@@ -4,6 +4,7 @@ import com.apifortress.libs.mailer.ApifMail;
 import com.apifortress.libs.mailer.config.AbstractApifMailConfig;
 import com.apifortress.libs.mailer.senders.IApifMailSender;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * @author 2019 Simone Pezzano
@@ -25,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  *         specific language governing permissions and limitations
  *         under the License.
  */
+@Component
 public class ApifAmazonMailSender implements IApifMailSender {
 
     @Autowired

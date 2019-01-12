@@ -27,6 +27,7 @@ import java.util.Hashtable;
  */
 public abstract class AbstractApifMailConfig extends Hashtable<String,Object> {
 
+    @PostConstruct
     public abstract void init() throws Exception;
 
     public Boolean getBoolean(String key){
