@@ -26,7 +26,6 @@ import org.springframework.stereotype.Component;
  *         specific language governing permissions and limitations
  *         under the License.
  */
-@Component
 public class ApifAmazonMailSender implements IApifMailSender {
 
     @Autowired

@@ -8,4 +8,5 @@
 
     <context:component-scan base-package="com.apifortress.libs.mailer"/>
     <bean name="mailSmtpConfig" class="com.apifortress.libs.mailer.config.impl.DummyApifMailSmtpConfig"/>
+    <bean name="mailSender" class="com.apifortress.libs.mailer.senders.impl.ApifSmtpMailSender"/>
  </beans>
