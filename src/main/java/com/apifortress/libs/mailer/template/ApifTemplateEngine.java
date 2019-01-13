@@ -1,14 +1,11 @@
-package com.apifortress.lib.mailer;
+package com.apifortress.libs.mailer.template;
 
-import com.apifortress.libs.mailer.config.AbstractApifMailSmtpConfig;
-import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Component;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.templateresolver.StringTemplateResolver;
 
-import static org.junit.Assert.assertEquals;
+import java.util.Map;
 
 /**
  * @author 2019 Simone Pezzano
@@ -30,13 +27,19 @@ import static org.junit.Assert.assertEquals;
  *         specific language governing permissions and limitations
  *         under the License.
  */
-public class TestApifSmtpMailSender {
+@Component
+public class ApifTemplateEngine {
 
-    @Test
-    public void testConfigInjection(){
-        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("dummy-smtp-beans.xml");
-        AbstractApifMailSmtpConfig config = applicationContext.getBean("mailSmtpConfig", AbstractApifMailSmtpConfig.class);
-        assertEquals("DummyApifMailSmtpConfig",config.getClass().getSimpleName());
-        assertEquals("foo.bar",config.get("smtpHost"));
+    TemplateEngine templateEngine;
+
+    public ApifTemplateEngine(){
+        templateEngine = new TemplateEngine();
+        templateEngine.setTemplateResolver(new StringTemplateResolver());
+    }
+
+    public String parse(AbstractApifTemplate template, Map<String,Object> variables){
+        Context context = new Context();
+        context.setVariables(variables);
+        return templateEngine.process(template.getText(),context);
     }
 }
