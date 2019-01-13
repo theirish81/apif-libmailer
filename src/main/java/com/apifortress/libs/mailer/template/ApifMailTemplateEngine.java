@@ -1,10 +1,13 @@
-package com.apifortress.libs.mailer.template.impl;
+package com.apifortress.libs.mailer.template;
 
-import com.apifortress.libs.mailer.template.AbstractApifTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Component;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.templateresolver.StringTemplateResolver;
 
-import java.io.*;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
+import java.util.Map;
 
 /**
  * @author 2019 Simone Pezzano
@@ -26,21 +29,24 @@ import java.nio.file.Files;
  *         specific language governing permissions and limitations
  *         under the License.
  */
-public class FsApifTemplate  extends AbstractApifTemplate {
+@Component
+public class ApifMailTemplateEngine {
 
-    private File subpathFile = new File("templates");
+    TemplateEngine templateEngine;
 
-    public void setSubpath(String subpath) throws FileNotFoundException {
-        subpathFile = new File(subpath);
-        if(!subpathFile.exists())
-            throw new FileNotFoundException("Subpath does not exist");
+    @Autowired
+    ApplicationContext applicationContext;
+
+    public ApifMailTemplateEngine(){
+        templateEngine = new TemplateEngine();
+        StringTemplateResolver resolver = new StringTemplateResolver();
+        resolver.setCacheable(true);
+        templateEngine.setTemplateResolver(resolver);
     }
 
-    @Override
-    public void load(String identifier) throws Exception {
-        File file = new File(subpathFile.getAbsolutePath()+File.separator+identifier);
-        if(!file.exists())
-            throw new FileNotFoundException("Template does not exist");
-        text = new String(Files.readAllBytes(file.toPath()), Charset.defaultCharset());
+    public String parse(AbstractApifMailTemplate template, Map<String,Object> variables){
+        Context context = new Context();
+        context.setVariables(variables);
+        return templateEngine.process(template.getText(),context);
     }
 }

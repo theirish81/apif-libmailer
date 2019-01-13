@@ -1,4 +1,10 @@
-package com.apifortress.libs.mailer.template;
+package com.apifortress.libs.mailer.template.impl;
+
+import com.apifortress.libs.mailer.template.AbstractApifMailTemplate;
+
+import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
 
 /**
  * @author 2019 Simone Pezzano
@@ -20,13 +26,21 @@ package com.apifortress.libs.mailer.template;
  *         specific language governing permissions and limitations
  *         under the License.
  */
-public abstract class AbstractApifTemplate {
+public class FsApifMailTemplate extends AbstractApifMailTemplate {
 
-    protected String text;
+    private File subpathFile = new File("templates");
 
-    public abstract void load(String identifier) throws Exception;
+    public void setSubpath(String subpath) throws FileNotFoundException {
+        subpathFile = new File(subpath);
+        if(!subpathFile.exists())
+            throw new FileNotFoundException("Subpath does not exist");
+    }
 
-    public String getText(){
-        return text;
+    @Override
+    public void load(String identifier) throws Exception {
+        File file = new File(subpathFile.getAbsolutePath()+File.separator+identifier);
+        if(!file.exists())
+            throw new FileNotFoundException("Template does not exist");
+        text = new String(Files.readAllBytes(file.toPath()), Charset.defaultCharset());
     }
 }

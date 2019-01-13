@@ -1,11 +1,6 @@
-package com.apifortress.libs.mailer.template;
+package com.apifortress.libs.mailer.template.impl;
 
-import org.springframework.stereotype.Component;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
-import org.thymeleaf.templateresolver.StringTemplateResolver;
-
-import java.util.Map;
+import com.apifortress.libs.mailer.template.AbstractApifMailTemplate;
 
 /**
  * @author 2019 Simone Pezzano
@@ -27,19 +22,9 @@ import java.util.Map;
  *         specific language governing permissions and limitations
  *         under the License.
  */
-@Component
-public class ApifTemplateEngine {
-
-    TemplateEngine templateEngine;
-
-    public ApifTemplateEngine(){
-        templateEngine = new TemplateEngine();
-        templateEngine.setTemplateResolver(new StringTemplateResolver());
-    }
-
-    public String parse(AbstractApifTemplate template, Map<String,Object> variables){
-        Context context = new Context();
-        context.setVariables(variables);
-        return templateEngine.process(template.getText(),context);
+public class DummyApifMailTemplate extends AbstractApifMailTemplate {
+    @Override
+    public void load(String identifier) throws Exception {
+        text = "Foo <span th:text=\"${foo}\"/>";
     }
 }

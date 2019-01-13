@@ -1,6 +1,4 @@
-package com.apifortress.libs.mailer.template.impl;
-
-import com.apifortress.libs.mailer.template.AbstractApifTemplate;
+package com.apifortress.libs.mailer.template;
 
 /**
  * @author 2019 Simone Pezzano
@@ -22,9 +20,13 @@ import com.apifortress.libs.mailer.template.AbstractApifTemplate;
  *         specific language governing permissions and limitations
  *         under the License.
  */
-public class DummyApifTemplate extends AbstractApifTemplate {
-    @Override
-    public void load(String identifier) throws Exception {
-        text = "Foo <span th:text=\"${foo}\"/>";
+public abstract class AbstractApifMailTemplate {
+
+    protected String text;
+
+    public abstract void load(String identifier) throws Exception;
+
+    public String getText(){
+        return text;
     }
 }

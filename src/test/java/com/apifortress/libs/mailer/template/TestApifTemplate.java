@@ -34,9 +34,9 @@ public class TestApifTemplate {
     @Test
     public void testTemplateResolver() throws Exception {
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("dummy-dummy-beans.xml");
-        AbstractApifTemplate template = applicationContext.getBean("apifTemplate",AbstractApifTemplate.class);
+        AbstractApifMailTemplate template = applicationContext.getBean("apifMailTemplate",AbstractApifMailTemplate.class);
         template.load("whatever");
-        ApifTemplateEngine engine = applicationContext.getBean("apifTemplateEngine",ApifTemplateEngine.class);
+        ApifMailTemplateEngine engine = applicationContext.getBean("apifMailTemplateEngine", ApifMailTemplateEngine.class);
         Map<String,Object> map = new HashMap<>();
         map.put("foo","bar");
         assertEquals("Foo <span>bar</span>", engine.parse(template,map));
