@@ -32,7 +32,7 @@ public class ApifSmtpMailSender implements IApifMailSender {
     @Autowired
     AbstractApifMailSmtpConfig mailSmtpConfig;
 
-    public void send(ApifMail mail) {
+    public void send(ApifMail mail) throws Exception {
 
     }
 }

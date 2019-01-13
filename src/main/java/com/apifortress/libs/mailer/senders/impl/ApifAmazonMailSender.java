@@ -31,7 +31,7 @@ public class ApifAmazonMailSender implements IApifMailSender {
     @Autowired
     AbstractApifMailConfig mailConfig;
 
-    public void send(ApifMail mail) {
+    public void send(ApifMail mail) throws Exception{
 
     }
 }

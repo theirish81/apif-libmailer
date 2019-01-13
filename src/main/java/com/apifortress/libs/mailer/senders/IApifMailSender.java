@@ -24,5 +24,5 @@ import com.apifortress.libs.mailer.ApifMail;
  */
 public interface IApifMailSender {
 
-    void send(ApifMail mail);
+    void send(ApifMail mail) throws Exception;
 }

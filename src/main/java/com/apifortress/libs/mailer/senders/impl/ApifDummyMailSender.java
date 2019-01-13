@@ -25,7 +25,7 @@ import com.apifortress.libs.mailer.senders.IApifMailSender;
  */
 public class ApifDummyMailSender implements IApifMailSender {
     @Override
-    public void send(ApifMail mail) {
+    public void send(ApifMail mail) throws Exception{
 
     }
 }

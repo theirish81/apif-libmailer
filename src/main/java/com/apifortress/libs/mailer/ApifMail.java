@@ -47,4 +47,20 @@ public class ApifMail {
             throw new IllegalArgumentException("Text cannot be null or empty");
         this.text = text;
     }
+
+    public String getRecipient() {
+        return recipient;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public String getMime() {
+        return mime;
+    }
+
+    public String getText() {
+        return text;
+    }
 }
