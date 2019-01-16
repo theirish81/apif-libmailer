@@ -34,9 +34,15 @@ public class TestApifSmtpMailSender {
 
     @Test
     public void testConfigInjection(){
+        /*
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("dummy-smtp-beans.xml");
         AbstractApifMailSmtpConfig config = applicationContext.getBean("mailSmtpConfig", AbstractApifMailSmtpConfig.class);
         assertEquals("DummyApifMailSmtpConfig",config.getClass().getSimpleName());
-        assertEquals("foo.bar",config.get("smtpHost"));
+        assertEquals("foo.bar",config.get("smtpHost"));*/
+
+        ApplicationContext propertiesContext = new ClassPathXmlApplicationContext("dummy-prop-beans.xml");
+        AbstractApifMailSmtpConfig propCfg = propertiesContext.getBean("propertiesApifMailSmtpConfig", AbstractApifMailSmtpConfig.class);
+        assertEquals("PropertiesApifMailSmtpConfig",propCfg.getClass().getSimpleName());
+        assertEquals("host",propCfg.get(AbstractApifMailSmtpConfig.SMTP_HOST));
     }
 }
