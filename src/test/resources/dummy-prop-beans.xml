@@ -7,5 +7,7 @@
            http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 
 <context:component-scan base-package="com.apifortress.libs.mailer"/>
-<bean name="propertiesApifMailSmtpConfig" class="com.apifortress.libs.mailer.config.impl.PropertiesApifMailSmtpConfig"/>
+<bean name="propertiesApifMailSmtpConfig" class="com.apifortress.libs.mailer.config.impl.PropertiesApifMailSmtpConfig">
+    <property name="filename" value="libmailer.properties"/>
+ </bean>
 </beans>

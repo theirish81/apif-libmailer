@@ -1,6 +1,8 @@
 package com.apifortress.libs.mailer.config;
 
 
+import com.apifortress.libs.mailer.exceptions.InvalidConfigException;
+
 import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -28,7 +30,7 @@ import java.util.Hashtable;
 public abstract class AbstractApifMailConfig extends Hashtable<String,Object> {
 
     @PostConstruct
-    public abstract void init() throws Exception;
+    public abstract void init() throws InvalidConfigException ;
 
     public Boolean getBoolean(String key){
         Object item = get(key);

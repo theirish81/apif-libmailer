@@ -1,6 +1,7 @@
 package com.apifortress.libs.mailer;
 
 import com.apifortress.libs.mailer.config.AbstractApifMailSmtpConfig;
+import com.apifortress.libs.mailer.exceptions.InvalidConfigException;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -45,4 +46,5 @@ public class TestApifSmtpMailSender {
         assertEquals("PropertiesApifMailSmtpConfig",propCfg.getClass().getSimpleName());
         assertEquals("host",propCfg.get(AbstractApifMailSmtpConfig.SMTP_HOST));
     }
+
 }

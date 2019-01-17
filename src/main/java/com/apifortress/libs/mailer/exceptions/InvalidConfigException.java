@@ -1,7 +1,4 @@
-package com.apifortress.libs.mailer.config.impl;
-
-import com.apifortress.libs.mailer.config.AbstractApifMailSmtpConfig;
-import com.apifortress.libs.mailer.exceptions.InvalidConfigException;
+package com.apifortress.libs.mailer.exceptions;
 
 /**
  * @author 2019 Simone Pezzano
@@ -23,10 +20,9 @@ import com.apifortress.libs.mailer.exceptions.InvalidConfigException;
  *         specific language governing permissions and limitations
  *         under the License.
  */
-public class DummyApifMailSmtpConfig extends AbstractApifMailSmtpConfig {
+public class InvalidConfigException extends Exception {
 
-    @Override
-    public void init() throws InvalidConfigException {
-        put(SMTP_HOST,"foo.bar");
+    public InvalidConfigException(String message){
+        super(message);
     }
 }

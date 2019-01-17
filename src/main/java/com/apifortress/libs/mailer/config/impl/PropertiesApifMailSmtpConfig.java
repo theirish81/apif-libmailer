@@ -1,6 +1,7 @@
 package com.apifortress.libs.mailer.config.impl;
 
 import com.apifortress.libs.mailer.config.AbstractApifMailSmtpConfig;
+import com.apifortress.libs.mailer.exceptions.InvalidConfigException;
 
 import java.io.FileInputStream;
 import java.io.File;
@@ -31,11 +32,13 @@ public class PropertiesApifMailSmtpConfig extends AbstractApifMailSmtpConfig {
 
     public static final String FILENAME = "libmailer.properties";
 
+    private String filename = FILENAME;
+
     @Override
-    public void init() throws Exception {
+    public void init() throws InvalidConfigException {
         Properties properties = new Properties();
         try {
-                InputStream filePropertiesStream = this.getClass().getClassLoader().getResourceAsStream(FILENAME);
+                InputStream filePropertiesStream = new FileInputStream(new File(filename));
                 //questo mi è servito per capire il path che usa IntelliJ.
                 //String test = this.getClass().getResource("/").getPath();
                 properties.load(filePropertiesStream);
@@ -47,10 +50,13 @@ public class PropertiesApifMailSmtpConfig extends AbstractApifMailSmtpConfig {
                 put(SMTP_PORT, properties.getProperty(SMTP_PORT));
                 put(SMTP_START_TLS, properties.getProperty(SMTP_START_TLS));
 
-        } catch (Exception ex)
-        {
-            //do something here.
+        } catch (Exception ex) {
+            throw new InvalidConfigException(ex.getMessage());
         }
 
+    }
+
+    public void setFilename(String filename){
+        this.filename = filename;
     }
 }
