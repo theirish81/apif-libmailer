@@ -3,6 +3,7 @@ package com.apifortress.libs.mailer.config.impl;
 import com.apifortress.libs.mailer.config.AbstractApifMailSmtpConfig;
 
 import java.io.FileInputStream;
+import java.io.File;
 import java.io.InputStream;
 import java.util.Properties;
 
@@ -33,16 +34,23 @@ public class PropertiesApifMailSmtpConfig extends AbstractApifMailSmtpConfig {
     @Override
     public void init() throws Exception {
         Properties properties = new Properties();
-        FileInputStream fileProperties = new FileInputStream("C:\\Users\\diego\\IdeaProjects\\apif-libmailer\\target\\classes\\libmailer.properties");
+        try {
+                InputStream filePropertiesStream = PropertiesApifMailSmtpConfig.class.getClassLoader().getResourceAsStream(FILENAME);
+                //questo mi è servito per capire il path che usa IntelliJ.
+                //String test = this.getClass().getResource("/").getPath();
+                properties.load(filePropertiesStream);
 
+                put(SMTP_HOST, properties.getProperty(SMTP_HOST));
+                put(SMTP_USERNAME, properties.getProperty(SMTP_USERNAME));
+                put(SMTP_PASSWORD, properties.getProperty(SMTP_PASSWORD));
+                put(SMTP_NO_AUTH, properties.getProperty(SMTP_NO_AUTH));
+                put(SMTP_PORT, properties.getProperty(SMTP_PORT));
+                put(SMTP_START_TLS, properties.getProperty(SMTP_START_TLS));
 
-        properties.load(fileProperties);
+        } catch (Exception ex)
+        {
+            //do something here.
+        }
 
-        put(SMTP_HOST,properties.getProperty(SMTP_HOST));
-        put(SMTP_USERNAME,properties.getProperty(SMTP_USERNAME));
-        put(SMTP_PASSWORD,properties.getProperty(SMTP_PASSWORD));
-        put(SMTP_NO_AUTH,properties.getProperty(SMTP_NO_AUTH));
-        put(SMTP_PORT,properties.getProperty(SMTP_PORT));
-        put(SMTP_START_TLS,properties.getProperty(SMTP_START_TLS));
     }
 }
