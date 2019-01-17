@@ -33,7 +33,7 @@ import java.util.Map;
  */
 public class ApifMailer {
 
-    Logger log = LoggerFactory.getLogger(ApifMailer.class);
+    private final Logger log = LoggerFactory.getLogger(ApifMailer.class);
 
     @Autowired
     IApifMailSender mailSender;

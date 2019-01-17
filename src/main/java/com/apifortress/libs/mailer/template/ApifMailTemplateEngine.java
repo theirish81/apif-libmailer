@@ -32,7 +32,7 @@ import java.util.Map;
 @Component
 public class ApifMailTemplateEngine {
 
-    TemplateEngine templateEngine;
+    private final TemplateEngine templateEngine;
 
     @Autowired
     ApplicationContext applicationContext;
