@@ -35,7 +35,7 @@ public class PropertiesApifMailSmtpConfig extends AbstractApifMailSmtpConfig {
     public void init() throws Exception {
         Properties properties = new Properties();
         try {
-                InputStream filePropertiesStream = PropertiesApifMailSmtpConfig.class.getClassLoader().getResourceAsStream(FILENAME);
+                InputStream filePropertiesStream = this.getClass().getClassLoader().getResourceAsStream(FILENAME);
                 //questo mi è servito per capire il path che usa IntelliJ.
                 //String test = this.getClass().getResource("/").getPath();
                 properties.load(filePropertiesStream);
