@@ -1,45 +1,20 @@
 package com.apifortress.libs.mailer.senders.impl;
 
 import com.apifortress.libs.mailer.config.AbstractApifMailSmtpConfig;
-import com.apifortress.libs.mailer.config.impl.PropertiesApifMailSmtpConfig;
-
-import javax.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
 import javax.mail.Authenticator;
+import javax.mail.PasswordAuthentication;
 
+@Component
+@Lazy
 public class ApifSmtpAuthenticator extends Authenticator{
 
-    private String user;
-    private String password;
-    private PropertiesApifMailSmtpConfig apiProperties;
+    @Autowired
+    AbstractApifMailSmtpConfig mailSmtpConfig;
 
-    @PostConstruct
-    public void init(){
-        setUser(getApiProperties().getProperties().getProperty(AbstractApifMailSmtpConfig.SMTP_USERNAME));
-        setPassword(getApiProperties().getProperties().getProperty(AbstractApifMailSmtpConfig.SMTP_PASSWORD));
-    }
-
-
-    public PropertiesApifMailSmtpConfig getApiProperties() {
-        return apiProperties;
-    }
-
-    public void setApiProperties(PropertiesApifMailSmtpConfig apiProperties) {
-        this.apiProperties = apiProperties;
-    }
-
-    public String getUser() {
-        return user;
-    }
-
-    public void setUser(String user) {
-        this.user = user;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    protected PasswordAuthentication getPasswordAuthentication() {
+        return new PasswordAuthentication(mailSmtpConfig.getUsername(), mailSmtpConfig.getPassword());
     }
 }

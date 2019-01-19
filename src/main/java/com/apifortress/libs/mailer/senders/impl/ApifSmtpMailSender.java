@@ -4,9 +4,14 @@ import com.apifortress.libs.mailer.ApifMail;
 import com.apifortress.libs.mailer.config.AbstractApifMailSmtpConfig;
 import com.apifortress.libs.mailer.senders.IApifMailSender;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.util.Properties;
 
 /**
  * @author 2019 Simone Pezzano
@@ -28,37 +33,51 @@ import javax.mail.internet.MimeMessage;
  *         specific language governing permissions and limitations
  *         under the License.
  */
+@Component
+@Lazy
 public class ApifSmtpMailSender implements IApifMailSender {
 
     @Autowired
     AbstractApifMailSmtpConfig mailSmtpConfig;
 
-    private ApifSmtpSession apifSession;
-    private Session session;
-    private Transport transport;
-    private MimeMessage mime;
+    @Autowired
+    ApifSmtpAuthenticator mailSmtpAuthenticator;
+
+    private Properties javamailProperties;
+    private static String JM_KEY_DO_AUTH = "mail.smtp.auth";
+    private static String JM_KEY_TRANSPORT = "mail.transport.protocol";
+    private static String JM_VALUE_TRANSPORT = "smtp";
+    private static String JM_KEY_SOCKERFACTORY = "mail.smtp.socketFactory.class";
+    private static String JM_VALUE_SOCKERFACTORY = "javax.net.ssl.SSLSocketFactory";
+    private static String JM_KEY_HOST = "mail.smtp.host";
+    private static String JM_KEY_PORT = "mail.smtp.port";
+
+    /**
+     * AbstractApifMailSmtpConfig is config independent, therefore we need to convert
+     * the properties into a Javamail compatible properties object
+     */
+    @PostConstruct
+    public void init(){
+        javamailProperties = new Properties();
+        javamailProperties.put(JM_KEY_DO_AUTH,!mailSmtpConfig.isNoAuth());
+        javamailProperties.put(JM_KEY_TRANSPORT,JM_VALUE_TRANSPORT);
+        javamailProperties.put(JM_KEY_SOCKERFACTORY,JM_VALUE_SOCKERFACTORY);
+        javamailProperties.put(JM_KEY_HOST,mailSmtpConfig.getHost());
+        javamailProperties.put(JM_KEY_PORT,mailSmtpConfig.getPort());
+    }
 
     public void send(ApifMail mail) throws Exception {
-        session = getApifSession().init();
-        transport = session.getTransport();
-        mime = new MimeMessage(session);
+        Session session;
+        if(mailSmtpConfig.isNoAuth())
+            session = Session.getInstance(javamailProperties);
+        else
+            session = Session.getInstance(javamailProperties,mailSmtpAuthenticator);
 
-        mime.setContent("This is a test", "text/plain");
-        mime.setFrom(new InternetAddress("dbrach77@gmail.com"));
-        mime.addRecipient(Message.RecipientType.TO,new InternetAddress("dbrach77@gmail.com"));
+        Transport transport = session.getTransport();
 
         transport.connect();
-        transport.sendMessage(mime,mime.getRecipients(Message.RecipientType.TO));
+
         transport.close();
-    }
-
-    public void setApifSession(ApifSmtpSession apifSession) {
-        this.apifSession = apifSession;
-    }
-
-
-    public ApifSmtpSession getApifSession() {
-        return apifSession;
     }
 }
 

@@ -34,23 +34,21 @@ public class PropertiesApifMailSmtpConfig extends AbstractApifMailSmtpConfig {
     public static final String FILENAME = "libmailer.properties";
 
     private String filename = FILENAME;
-    private Properties properties;
 
     @Override
     public void init() throws InvalidConfigException {
-        properties = new Properties();
         InputStream filePropertiesStream = null;
         try {
                 filePropertiesStream = new FileInputStream(new File(filename));
+                Properties properties = new Properties();
+                properties.load(filePropertiesStream);
 
-                getProperties().load(filePropertiesStream);
-
-                put(SMTP_HOST, getProperties().getProperty(SMTP_HOST));
-                put(SMTP_USERNAME, getProperties().getProperty(SMTP_USERNAME));
-                put(SMTP_PASSWORD, getProperties().getProperty(SMTP_PASSWORD));
-                put(SMTP_NO_AUTH, getProperties().getProperty(SMTP_NO_AUTH));
-                put(SMTP_PORT, Integer.valueOf(getProperties().getProperty(SMTP_PORT)));
-                put(SMTP_START_TLS, Boolean.valueOf(getProperties().getProperty(SMTP_START_TLS)));
+                put(SMTP_HOST, properties.getProperty(SMTP_HOST));
+                put(SMTP_USERNAME, properties.getProperty(SMTP_USERNAME));
+                put(SMTP_PASSWORD, properties.getProperty(SMTP_PASSWORD));
+                put(SMTP_NO_AUTH, properties.getProperty(SMTP_NO_AUTH));
+                put(SMTP_PORT, Integer.valueOf(properties.getProperty(SMTP_PORT)));
+                put(SMTP_START_TLS, Boolean.valueOf(properties.getProperty(SMTP_START_TLS)));
 
         } catch (Exception ex) {
             throw new InvalidConfigException(ex.getMessage());
@@ -66,7 +64,4 @@ public class PropertiesApifMailSmtpConfig extends AbstractApifMailSmtpConfig {
         this.filename = filename;
     }
 
-    public Properties getProperties() {
-        return properties;
-    }
 }

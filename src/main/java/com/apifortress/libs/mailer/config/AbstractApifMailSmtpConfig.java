@@ -28,4 +28,23 @@ public abstract class AbstractApifMailSmtpConfig extends AbstractApifMailConfig 
     public static final String SMTP_NO_AUTH = "smtpNoAuth";
     public static final String SMTP_PORT = "smtpPort";
     public static final String SMTP_START_TLS = "smtpStartTLS";
+
+    public String getHost(){
+        return getString(SMTP_HOST);
+    }
+    public String getUsername(){
+        return getString(SMTP_USERNAME);
+    }
+    public String getPassword(){
+        return getString(SMTP_PASSWORD);
+    }
+    public boolean isNoAuth(){
+        return getBoolean(SMTP_NO_AUTH);
+    }
+    public int getPort(){
+        return getInt(SMTP_PORT);
+    }
+    public boolean isStartTls(){
+        return getBoolean(SMTP_START_TLS);
+    }
 }

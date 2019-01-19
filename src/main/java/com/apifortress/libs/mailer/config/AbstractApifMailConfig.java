@@ -51,4 +51,8 @@ public abstract class AbstractApifMailConfig extends Hashtable<String,Object> {
         else
             throw new IllegalArgumentException("The configuration key "+key+" is not a valid type");
     }
+
+    public String getString(String key){
+        return (String) get(key);
+    }
 }
