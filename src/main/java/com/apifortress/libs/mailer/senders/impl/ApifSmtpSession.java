@@ -7,12 +7,10 @@ import java.util.Properties;
 public class ApifSmtpSession{
 
     private ApifSmtpAuthenticator apifSmtpAuth;
-    private PropertiesApifMailSmtpConfig apifProps;
 
     public Session init()
     {
-
-        return Session.getDefaultInstance(apifProps.getProperties(),apifSmtpAuth);
+        return Session.getDefaultInstance(apifSmtpAuth.getApiProperties().getProperties(),apifSmtpAuth);
     }
 
     public ApifSmtpAuthenticator getApifSmtpAuth() {
@@ -23,16 +21,6 @@ public class ApifSmtpSession{
     public void setApifSmtpAuth(ApifSmtpAuthenticator apifSmtpAuth) {
 
         this.apifSmtpAuth = apifSmtpAuth;
-    }
-
-    public PropertiesApifMailSmtpConfig getApifProps()
-    {
-        return apifProps;
-    }
-
-    public void setApifProps(PropertiesApifMailSmtpConfig apifProps) {
-
-        this.apifProps = apifProps;
     }
 
 }

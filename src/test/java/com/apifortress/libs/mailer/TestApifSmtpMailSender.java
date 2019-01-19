@@ -60,8 +60,8 @@ public class TestApifSmtpMailSender {
 
         ApplicationContext senderContext = new ClassPathXmlApplicationContext("dummy-stmpsender-beans.xml");
         ApifSmtpMailSender  sender = senderContext.getBean("apifSender", ApifSmtpMailSender.class);
-        assertEquals("host",sender.getApifSession().getApifProps().get(AbstractApifMailSmtpConfig.SMTP_HOST));
-        assertEquals("user",sender.getApifSession().getApifSmtpAuth().getUser());
+        assertEquals("host",sender.getApifSession().getApifSmtpAuth().getApiProperties().get(AbstractApifMailSmtpConfig.SMTP_HOST));
+        assertEquals("username",sender.getApifSession().getApifSmtpAuth().getUser());
     }
 
 }

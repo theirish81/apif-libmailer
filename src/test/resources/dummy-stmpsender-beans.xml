@@ -12,13 +12,11 @@
     </bean>
     <bean name="apifSession" class="com.apifortress.libs.mailer.senders.impl.ApifSmtpSession">
         <property name="apifSmtpAuth" ref="apifSmtpAuth"/>
-        <property name="apifProps" ref="apifProps"/>
     </bean>
     <bean name="apifSmtpAuth" class="com.apifortress.libs.mailer.senders.impl.ApifSmtpAuthenticator">
-        <property name="user" value="user"/>
-        <property name="password" value="password"/>
+        <property name="apiProperties" ref="apiProperties"/>
     </bean>
-    <bean name="apifProps" class="com.apifortress.libs.mailer.config.impl.PropertiesApifMailSmtpConfig">
+    <bean name="apiProperties" class="com.apifortress.libs.mailer.config.impl.PropertiesApifMailSmtpConfig">
         <property name="filename" value="libmailer.properties"/>
     </bean>
 </beans>
