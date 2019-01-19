@@ -1,11 +1,12 @@
 package com.apifortress.libs.mailer.senders.impl;
 
 import com.apifortress.libs.mailer.ApifMail;
-import com.apifortress.libs.mailer.config.AbstractApifMailConfig;
 import com.apifortress.libs.mailer.config.AbstractApifMailSmtpConfig;
 import com.apifortress.libs.mailer.senders.IApifMailSender;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 /**
  * @author 2019 Simone Pezzano
@@ -32,7 +33,32 @@ public class ApifSmtpMailSender implements IApifMailSender {
     @Autowired
     AbstractApifMailSmtpConfig mailSmtpConfig;
 
-    public void send(ApifMail mail) throws Exception {
+    private ApifSmtpSession apifSession;
+    private Session session;
+    private Transport transport;
+    private MimeMessage mime;
 
+    public void send(ApifMail mail) throws Exception {
+        session = getApifSession().init();
+        transport = session.getTransport();
+        mime = new MimeMessage(session);
+
+        mime.setContent("This is a test", "text/plain");
+        mime.setFrom(new InternetAddress("dbrach77@gmail.com"));
+        mime.addRecipient(Message.RecipientType.TO,new InternetAddress("dbrach77@gmail.com"));
+
+        transport.connect();
+        transport.sendMessage(mime,mime.getRecipients(Message.RecipientType.TO));
+        transport.close();
+    }
+
+    public void setApifSession(ApifSmtpSession apifSession) {
+        this.apifSession = apifSession;
+    }
+
+
+    public ApifSmtpSession getApifSession() {
+        return apifSession;
     }
 }
+
