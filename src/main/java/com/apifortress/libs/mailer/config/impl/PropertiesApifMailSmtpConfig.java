@@ -3,10 +3,7 @@ package com.apifortress.libs.mailer.config.impl;
 import com.apifortress.libs.mailer.config.AbstractApifMailSmtpConfig;
 import com.apifortress.libs.mailer.exceptions.InvalidConfigException;
 
-import java.io.FileInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Properties;
 
 /**
@@ -39,7 +36,10 @@ public class PropertiesApifMailSmtpConfig extends AbstractApifMailSmtpConfig {
     public void init() throws InvalidConfigException {
         InputStream filePropertiesStream = null;
         try {
-                filePropertiesStream = new FileInputStream(new File(filename));
+                File file = new File(filename);
+                if(!file.exists())
+                    throw new FileNotFoundException("Configuration file "+filename+" does not exist");
+                filePropertiesStream = new FileInputStream(file);
                 Properties properties = new Properties();
                 properties.load(filePropertiesStream);
 
@@ -54,7 +54,8 @@ public class PropertiesApifMailSmtpConfig extends AbstractApifMailSmtpConfig {
             throw new InvalidConfigException(ex.getMessage());
         } finally{
             try {
-                filePropertiesStream.close();
+                if(filePropertiesStream!=null)
+                    filePropertiesStream.close();
             }catch(IOException e){e.printStackTrace();}
         }
 

@@ -27,7 +27,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        ApplicationContext context = new ClassPathXmlApplicationContext("properties-smtp-beans.xml");
+        ApplicationContext context = new ClassPathXmlApplicationContext("real-properties-smtp-beans.xml");
         ApifMail mail = new ApifMail("my_email_address@apifortress.com","Foobar","text/plain","Temp message");
         IApifMailSender sender = (IApifMailSender) context.getBean("apifSmtpMailSender");
         sender.send(mail);
