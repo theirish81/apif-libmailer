@@ -51,6 +51,9 @@ public class ApifSmtpMailSender implements IApifMailSender {
     private static String JM_VALUE_SOCKERFACTORY = "javax.net.ssl.SSLSocketFactory";
     private static String JM_KEY_HOST = "mail.smtp.host";
     private static String JM_KEY_PORT = "mail.smtp.port";
+    private static String JM_KEY_USER = "mail.smtp.user";
+    private static String JM_KEY_PASSWORD = "mail.smtp.password";
+    private static String JM_START_TLS = "mail.smtp.starttls.enable";
 
     /**
      * AbstractApifMailSmtpConfig is config independent, therefore we need to convert
@@ -64,6 +67,11 @@ public class ApifSmtpMailSender implements IApifMailSender {
         javamailProperties.put(JM_KEY_SOCKERFACTORY,JM_VALUE_SOCKERFACTORY);
         javamailProperties.put(JM_KEY_HOST,mailSmtpConfig.getHost());
         javamailProperties.put(JM_KEY_PORT,mailSmtpConfig.getPort());
+        javamailProperties.put(JM_START_TLS,mailSmtpConfig.isStartTls());
+        if(!mailSmtpConfig.isNoAuth()) {
+            javamailProperties.put(JM_KEY_USER,mailSmtpConfig.getUsername());
+            javamailProperties.put(JM_KEY_PASSWORD,mailSmtpConfig.getPassword());
+        }
     }
 
     public void send(ApifMail mail) throws Exception {
@@ -74,9 +82,15 @@ public class ApifSmtpMailSender implements IApifMailSender {
             session = Session.getInstance(javamailProperties,mailSmtpAuthenticator);
 
         Transport transport = session.getTransport();
-
+        MimeMessage message = new MimeMessage(session);
+        message.setFrom(new InternetAddress(mailSmtpConfig.getFrom()));
+        message.setSubject(mail.getSubject());
+        message.setRecipients(MimeMessage.RecipientType.TO, mail.getRecipient());
+        message.setContent(mail.getText(),mail.getMime());
         transport.connect();
-
+        Address[] addresses = new Address[1];
+        addresses[0] = new InternetAddress(mail.getRecipient());
+        transport.sendMessage(message,addresses);
         transport.close();
     }
 }

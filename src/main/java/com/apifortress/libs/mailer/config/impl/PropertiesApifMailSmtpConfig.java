@@ -49,6 +49,7 @@ public class PropertiesApifMailSmtpConfig extends AbstractApifMailSmtpConfig {
                 put(SMTP_NO_AUTH, properties.getProperty(SMTP_NO_AUTH));
                 put(SMTP_PORT, Integer.valueOf(properties.getProperty(SMTP_PORT)));
                 put(SMTP_START_TLS, Boolean.valueOf(properties.getProperty(SMTP_START_TLS)));
+                put(SMTP_FROM,properties.getProperty(SMTP_FROM));
 
         } catch (Exception ex) {
             throw new InvalidConfigException(ex.getMessage());

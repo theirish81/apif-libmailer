@@ -28,7 +28,7 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         ApplicationContext context = new ClassPathXmlApplicationContext("real-properties-smtp-beans.xml");
-        ApifMail mail = new ApifMail("my_email_address@apifortress.com","Foobar","text/plain","Temp message");
+        ApifMail mail = new ApifMail("theirish81@gmail.com","Foobar","text/plain","Temp message");
         IApifMailSender sender = (IApifMailSender) context.getBean("apifSmtpMailSender");
         sender.send(mail);
     }

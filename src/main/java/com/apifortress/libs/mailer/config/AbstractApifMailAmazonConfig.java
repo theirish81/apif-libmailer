@@ -1,12 +1,4 @@
-package com.apifortress.libs.mailer.senders.impl;
-
-import com.apifortress.libs.mailer.ApifMail;
-import com.apifortress.libs.mailer.config.AbstractApifMailAmazonConfig;
-import com.apifortress.libs.mailer.config.AbstractApifMailConfig;
-import com.apifortress.libs.mailer.senders.IApifMailSender;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
+package com.apifortress.libs.mailer.config;
 
 /**
  * @author 2019 Simone Pezzano
@@ -28,14 +20,5 @@ import org.springframework.stereotype.Component;
  *         specific language governing permissions and limitations
  *         under the License.
  */
-@Component
-@Lazy
-public class ApifAmazonMailSender implements IApifMailSender {
-
-    @Autowired
-    AbstractApifMailAmazonConfig mailConfig;
-
-    public void send(ApifMail mail) throws Exception{
-
-    }
+public abstract class AbstractApifMailAmazonConfig extends AbstractApifMailConfig {
 }
