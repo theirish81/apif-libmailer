@@ -43,7 +43,7 @@ public class ApifSmtpMailSender implements IApifMailSender {
     @Autowired
     ApifSmtpAuthenticator mailSmtpAuthenticator;
 
-    private Properties javamailProperties;
+    Properties javamailProperties;
     private static String JM_KEY_DO_AUTH = "mail.smtp.auth";
     private static String JM_KEY_TRANSPORT = "mail.transport.protocol";
     private static String JM_VALUE_TRANSPORT = "smtp";
