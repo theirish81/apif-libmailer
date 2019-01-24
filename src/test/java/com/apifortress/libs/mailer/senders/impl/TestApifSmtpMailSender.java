@@ -1,8 +1,8 @@
 package com.apifortress.libs.mailer.senders.impl;
 
+import com.apifortress.libs.mailer.config.AbstractApifMailSmtpConfig;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -46,5 +46,24 @@ public class TestApifSmtpMailSender {
         ApifSmtpMailSender mailSender = propertiesContext.getBean(ApifSmtpMailSender.class);
         assertEquals(mailSender.mailSmtpConfig.getUsername(),mailSender.mailSmtpAuthenticator.getPasswordAuthentication().getUserName());
         assertEquals(mailSender.mailSmtpConfig.getPassword(),mailSender.mailSmtpAuthenticator.getPasswordAuthentication().getPassword());
+    }
+
+    @Test
+    public void testSmtpSenderJavamailProperties(){
+        ApifSmtpMailSender mailSender = propertiesContext.getBean(ApifSmtpMailSender.class);
+        AbstractApifMailSmtpConfig config = propertiesContext.getBean(AbstractApifMailSmtpConfig.class);
+
+        assertEquals(mailSender.javamailProperties.get(ApifSmtpMailSender.JM_KEY_DO_AUTH),!config.isNoAuth());
+        assertEquals(mailSender.javamailProperties.get(ApifSmtpMailSender.JM_KEY_HOST),config.getHost());
+        assertEquals(mailSender.javamailProperties.get(ApifSmtpMailSender.JM_KEY_PORT),config.getPort());
+        assertEquals(mailSender.javamailProperties.get(ApifSmtpMailSender.JM_START_TLS),config.isStartTls());
+        if(!config.isNoAuth()) {
+            assertEquals(mailSender.javamailProperties.get(ApifSmtpMailSender.JM_KEY_USER),config.getUsername());
+            assertEquals(mailSender.javamailProperties.get(ApifSmtpMailSender.JM_KEY_PASSWORD),config.getPassword());
+        }
+
+        //non credo servano
+        assertEquals(mailSender.javamailProperties.get(ApifSmtpMailSender.JM_KEY_TRANSPORT),ApifSmtpMailSender.JM_VALUE_TRANSPORT);
+        assertEquals(mailSender.javamailProperties.get(ApifSmtpMailSender.JM_KEY_SOCKERFACTORY),ApifSmtpMailSender.JM_VALUE_SOCKERFACTORY);
     }
 }

@@ -44,16 +44,16 @@ public class ApifSmtpMailSender implements IApifMailSender {
     ApifSmtpAuthenticator mailSmtpAuthenticator;
 
     Properties javamailProperties;
-    private static String JM_KEY_DO_AUTH = "mail.smtp.auth";
-    private static String JM_KEY_TRANSPORT = "mail.transport.protocol";
-    private static String JM_VALUE_TRANSPORT = "smtp";
-    private static String JM_KEY_SOCKERFACTORY = "mail.smtp.socketFactory.class";
-    private static String JM_VALUE_SOCKERFACTORY = "javax.net.ssl.SSLSocketFactory";
-    private static String JM_KEY_HOST = "mail.smtp.host";
-    private static String JM_KEY_PORT = "mail.smtp.port";
-    private static String JM_KEY_USER = "mail.smtp.user";
-    private static String JM_KEY_PASSWORD = "mail.smtp.password";
-    private static String JM_START_TLS = "mail.smtp.starttls.enable";
+    static String JM_KEY_DO_AUTH = "mail.smtp.auth";
+    static String JM_KEY_TRANSPORT = "mail.transport.protocol";
+    static String JM_VALUE_TRANSPORT = "smtp";
+    static String JM_KEY_SOCKERFACTORY = "mail.smtp.socketFactory.class";
+    static String JM_VALUE_SOCKERFACTORY = "javax.net.ssl.SSLSocketFactory";
+    static String JM_KEY_HOST = "mail.smtp.host";
+    static String JM_KEY_PORT = "mail.smtp.port";
+    static String JM_KEY_USER = "mail.smtp.user";
+    static String JM_KEY_PASSWORD = "mail.smtp.password";
+    static String JM_START_TLS = "mail.smtp.starttls.enable";
 
     /**
      * AbstractApifMailSmtpConfig is config independent, therefore we need to convert
