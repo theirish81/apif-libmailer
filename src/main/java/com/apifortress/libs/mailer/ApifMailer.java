@@ -36,9 +36,6 @@ public class ApifMailer {
     private final Logger log = LoggerFactory.getLogger(ApifMailer.class);
 
     @Autowired
-    IApifMailSender mailSender;
-
-    @Autowired
     ApifMailTemplateEngine templateEngine;
 
     @Autowired
@@ -51,7 +48,7 @@ public class ApifMailer {
 
     private void sendMail(ApifMail mail){
         try {
-            mailSender.send(mail);
+
         }catch(Exception e){ log.error("Error while sending email to "+mail.getRecipient(),e);}
     }
 }
