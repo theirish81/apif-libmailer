@@ -2,6 +2,7 @@ package com.apifortress.libs.mailer.config.impl;
 
 import com.apifortress.libs.mailer.config.AbstractApifMailSmtpConfig;
 import com.apifortress.libs.mailer.exceptions.InvalidConfigException;
+import com.apifortress.libs.mailer.util.LoadProperties;
 
 import java.io.*;
 import java.util.Properties;
@@ -34,31 +35,15 @@ public class PropertiesApifMailSmtpConfig extends AbstractApifMailSmtpConfig {
 
     @Override
     public void init() throws InvalidConfigException {
-        InputStream filePropertiesStream = null;
-        try {
-                File file = new File(filename);
-                if(!file.exists())
-                    throw new FileNotFoundException("Configuration file "+filename+" does not exist");
-                filePropertiesStream = new FileInputStream(file);
-                Properties properties = new Properties();
-                properties.load(filePropertiesStream);
+        Properties properties = LoadProperties.getProperties(filename);
 
-                put(SMTP_HOST, properties.getProperty(SMTP_HOST));
-                put(SMTP_USERNAME, properties.getProperty(SMTP_USERNAME));
-                put(SMTP_PASSWORD, properties.getProperty(SMTP_PASSWORD));
-                put(SMTP_NO_AUTH, properties.getProperty(SMTP_NO_AUTH));
-                put(SMTP_PORT, Integer.valueOf(properties.getProperty(SMTP_PORT)));
-                put(SMTP_START_TLS, Boolean.valueOf(properties.getProperty(SMTP_START_TLS)));
-                put(SMTP_FROM,properties.getProperty(SMTP_FROM));
-
-        } catch (Exception ex) {
-            throw new InvalidConfigException(ex.getMessage());
-        } finally{
-            try {
-                if(filePropertiesStream!=null)
-                    filePropertiesStream.close();
-            }catch(IOException e){e.printStackTrace();}
-        }
+        put(SMTP_HOST, properties.getProperty(SMTP_HOST));
+        put(SMTP_USERNAME, properties.getProperty(SMTP_USERNAME));
+        put(SMTP_PASSWORD, properties.getProperty(SMTP_PASSWORD));
+        put(SMTP_NO_AUTH, properties.getProperty(SMTP_NO_AUTH));
+        put(SMTP_PORT, Integer.valueOf(properties.getProperty(SMTP_PORT)));
+        put(SMTP_START_TLS, Boolean.valueOf(properties.getProperty(SMTP_START_TLS)));
+        put(SMTP_FROM,properties.getProperty(SMTP_FROM));
 
     }
 

@@ -2,6 +2,7 @@ package com.apifortress.libs.mailer.senders.impl;
 
 import com.apifortress.libs.mailer.ApifMail;
 import com.apifortress.libs.mailer.config.AbstractApifMailSmtpConfig;
+import com.apifortress.libs.mailer.globalconfig.AbstractApifMailGlobalConfig;
 import com.apifortress.libs.mailer.senders.IApifMailSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -43,6 +44,9 @@ public class ApifSmtpMailSender implements IApifMailSender {
     @Autowired
     ApifSmtpAuthenticator mailSmtpAuthenticator;
 
+    @Autowired
+    AbstractApifMailGlobalConfig mailGlobalConfig;
+
     Properties javamailProperties;
     static String JM_KEY_DO_AUTH = "mail.smtp.auth";
     static String JM_KEY_TRANSPORT = "mail.transport.protocol";
@@ -61,37 +65,45 @@ public class ApifSmtpMailSender implements IApifMailSender {
      */
     @PostConstruct
     public void init(){
-        javamailProperties = new Properties();
-        javamailProperties.put(JM_KEY_DO_AUTH,!mailSmtpConfig.isNoAuth());
-        javamailProperties.put(JM_KEY_TRANSPORT,JM_VALUE_TRANSPORT);
-        javamailProperties.put(JM_KEY_SOCKERFACTORY,JM_VALUE_SOCKERFACTORY);
-        javamailProperties.put(JM_KEY_HOST,mailSmtpConfig.getHost());
-        javamailProperties.put(JM_KEY_PORT,mailSmtpConfig.getPort());
-        javamailProperties.put(JM_START_TLS,mailSmtpConfig.isStartTls());
-        if(!mailSmtpConfig.isNoAuth()) {
-            javamailProperties.put(JM_KEY_USER,mailSmtpConfig.getUsername());
-            javamailProperties.put(JM_KEY_PASSWORD,mailSmtpConfig.getPassword());
+        if (isSmtpMode()) {
+            javamailProperties = new Properties();
+            javamailProperties.put(JM_KEY_DO_AUTH, !mailSmtpConfig.isNoAuth());
+            javamailProperties.put(JM_KEY_TRANSPORT, JM_VALUE_TRANSPORT);
+            javamailProperties.put(JM_KEY_SOCKERFACTORY, JM_VALUE_SOCKERFACTORY);
+            javamailProperties.put(JM_KEY_HOST, mailSmtpConfig.getHost());
+            javamailProperties.put(JM_KEY_PORT, mailSmtpConfig.getPort());
+            javamailProperties.put(JM_START_TLS, mailSmtpConfig.isStartTls());
+            if (!mailSmtpConfig.isNoAuth()) {
+                javamailProperties.put(JM_KEY_USER, mailSmtpConfig.getUsername());
+                javamailProperties.put(JM_KEY_PASSWORD, mailSmtpConfig.getPassword());
+            }
         }
     }
 
     public void send(ApifMail mail) throws Exception {
-        Session session;
-        if(mailSmtpConfig.isNoAuth())
-            session = Session.getInstance(javamailProperties);
-        else
-            session = Session.getInstance(javamailProperties,mailSmtpAuthenticator);
+        if (isSmtpMode()) {
+            Session session;
+            if (mailSmtpConfig.isNoAuth())
+                session = Session.getInstance(javamailProperties);
+            else
+                session = Session.getInstance(javamailProperties, mailSmtpAuthenticator);
 
-        Transport transport = session.getTransport();
-        MimeMessage message = new MimeMessage(session);
-        message.setFrom(new InternetAddress(mailSmtpConfig.getFrom()));
-        message.setSubject(mail.getSubject());
-        message.setRecipients(MimeMessage.RecipientType.TO, mail.getRecipient());
-        message.setContent(mail.getText(),mail.getMime());
-        transport.connect();
-        Address[] addresses = new Address[1];
-        addresses[0] = new InternetAddress(mail.getRecipient());
-        transport.sendMessage(message,addresses);
-        transport.close();
+            Transport transport = session.getTransport();
+            MimeMessage message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(mailSmtpConfig.getFrom()));
+            message.setSubject(mail.getSubject());
+            message.setRecipients(MimeMessage.RecipientType.TO, mail.getRecipient());
+            message.setContent(mail.getText(), mail.getMime());
+            transport.connect();
+            Address[] addresses = new Address[1];
+            addresses[0] = new InternetAddress(mail.getRecipient());
+            transport.sendMessage(message, addresses);
+            transport.close();
+        }
+    }
+
+    private Boolean isSmtpMode(){
+       return   AbstractApifMailGlobalConfig.GC_MODE_SMTP_VALUE.equals(mailGlobalConfig.getGcMode()) ? true : false;
     }
 }
 

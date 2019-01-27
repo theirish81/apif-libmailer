@@ -1,8 +1,10 @@
 package com.apifortress.libs.mailer.senders.impl;
 
 import com.apifortress.libs.mailer.config.AbstractApifMailSmtpConfig;
+import com.apifortress.libs.mailer.globalconfig.AbstractApifMailGlobalConfig;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -65,5 +67,14 @@ public class TestApifSmtpMailSender {
         //non credo servano
         assertEquals(mailSender.javamailProperties.get(ApifSmtpMailSender.JM_KEY_TRANSPORT),ApifSmtpMailSender.JM_VALUE_TRANSPORT);
         assertEquals(mailSender.javamailProperties.get(ApifSmtpMailSender.JM_KEY_SOCKERFACTORY),ApifSmtpMailSender.JM_VALUE_SOCKERFACTORY);
+    }
+
+    @Test
+    public void testGcConfig()
+    {
+        ApifSmtpMailSender mailSender = propertiesContext.getBean(ApifSmtpMailSender.class);
+        AbstractApifMailGlobalConfig gcCfg = propertiesContext.getBean("globalConfig", AbstractApifMailGlobalConfig.class);
+        assertEquals("PropertiesAbstractApifMailGlobalConfig", gcCfg.getClass().getSimpleName());
+        assertEquals(AbstractApifMailGlobalConfig.GC_MODE_SMTP_VALUE, gcCfg.get(AbstractApifMailGlobalConfig.GC_MODE));
     }
 }

@@ -1,12 +1,12 @@
-package com.apifortress.libs.mailer.config;
+package com.apifortress.libs.mailer.global;
 
+import com.apifortress.libs.mailer.config.AbstractApifMailSmtpConfig;
+import com.apifortress.libs.mailer.globalconfig.AbstractApifMailGlobalConfig;
+import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.apifortress.libs.mailer.exceptions.InvalidConfigException;
-import com.apifortress.libs.mailer.util.HashtableExtended;
-
-import javax.annotation.PostConstruct;
-import java.util.HashMap;
-import java.util.Hashtable;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author 2019 Simone Pezzano
@@ -28,8 +28,13 @@ import java.util.Hashtable;
  *         specific language governing permissions and limitations
  *         under the License.
  */
-public abstract class AbstractApifMailConfig extends HashtableExtended {
+public class GlobalConfigInjection {
 
-    @PostConstruct
-    public abstract void init() throws InvalidConfigException ;
+    @Test
+    public void testPropertiesConfigInjection() {
+        ApplicationContext propertiesContext = new ClassPathXmlApplicationContext("global-configuration-beans.xml");
+        AbstractApifMailGlobalConfig gcCfg = propertiesContext.getBean("globalConfig", AbstractApifMailGlobalConfig.class);
+        assertEquals("PropertiesAbstractApifMailGlobalConfig", gcCfg.getClass().getSimpleName());
+        assertEquals("smtp", gcCfg.get(AbstractApifMailGlobalConfig.GC_MODE));
+    }
 }
