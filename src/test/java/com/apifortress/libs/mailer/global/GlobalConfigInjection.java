@@ -1,7 +1,6 @@
 package com.apifortress.libs.mailer.global;
 
-import com.apifortress.libs.mailer.config.AbstractApifMailSmtpConfig;
-import com.apifortress.libs.mailer.globalconfig.AbstractApifMailGlobalConfig;
+import com.apifortress.libs.mailer.config.AbstractApifMailGlobalConfig;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;

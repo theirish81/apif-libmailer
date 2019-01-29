@@ -1,4 +1,4 @@
-package com.apifortress.libs.mailer.globalconfig;
+package com.apifortress.libs.mailer.config;
 
 
 import com.apifortress.libs.mailer.exceptions.InvalidConfigException;

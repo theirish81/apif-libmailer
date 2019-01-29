@@ -4,6 +4,9 @@ import com.apifortress.libs.mailer.senders.IApifMailSender;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 /**
  * @author 2019 Simone Pezzano
  *         ---
@@ -28,8 +31,7 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         ApplicationContext context = new ClassPathXmlApplicationContext("real-properties-smtp-beans.xml");
-        ApifMail mail = new ApifMail("dbrach77@gmail.com","Foobar","text/plain","Temp message");
-        IApifMailSender sender = (IApifMailSender) context.getBean("apifSmtpMailSender");
-        sender.send(mail);
+        ApifMailer apifMailer = (ApifMailer) context.getBean("mailer");
+        apifMailer.send(Stream.of("dbrach77@gmail.com", "dbrach77@gmail.com", "dbrach77@gmail.com").collect(Collectors.toList()),"foobar",null,null,"test/plain");
     }
 }

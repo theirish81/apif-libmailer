@@ -7,10 +7,12 @@
            http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 
     <context:component-scan base-package="com.apifortress.libs.mailer"/>
+    <bean name="mailer" class="com.apifortress.libs.mailer.ApifMailer" lazy-init="true">
+    </bean>
     <bean name="mailSmtpConfig" class="com.apifortress.libs.mailer.config.impl.PropertiesApifMailSmtpConfig" lazy-init="true">
         <property name="filename" value="real.properties"/>
     </bean>
-    <bean name="globalConfig" class="com.apifortress.libs.mailer.globalconfig.impl.PropertiesAbstractApifMailGlobalConfig" lazy-init="true">
+    <bean name="globalConfig" class="com.apifortress.libs.mailer.config.impl.PropertiesAbstractApifMailGlobalConfig" lazy-init="true">
         <property name="filename" value="global.properties"/>
     </bean>
 </beans>

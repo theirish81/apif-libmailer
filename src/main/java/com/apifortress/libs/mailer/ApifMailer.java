@@ -1,12 +1,13 @@
 package com.apifortress.libs.mailer;
 
+import com.apifortress.libs.mailer.config.AbstractApifMailGlobalConfig;
 import com.apifortress.libs.mailer.senders.IApifMailSender;
-import com.apifortress.libs.mailer.template.AbstractApifMailTemplate;
 import com.apifortress.libs.mailer.template.ApifMailTemplateEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.List;
 import java.util.Map;
@@ -41,14 +42,33 @@ public class ApifMailer {
     @Autowired
     ApplicationContext applicationContext;
 
+    @Autowired
+    AbstractApifMailGlobalConfig mailGlobalConfig;
+
 
     public void send(List<String> recipients, String subject, String templateName, Map<String,Object> variables, String mime) throws Exception {
-
+        for (String recipient : recipients){
+            sendMail(new ApifMail(recipient, subject, mime, "temp message"));
+        }
     }
 
     private void sendMail(ApifMail mail){
         try {
-
+            getApifSender().send(mail);
         }catch(Exception e){ log.error("Error while sending email to "+mail.getRecipient(),e);}
+    }
+
+    private IApifMailSender getApifSender(){
+        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("real-properties-smtp-beans.xml");
+        IApifMailSender sender = null;
+
+        if (isSmtpMode())
+            sender = (IApifMailSender) applicationContext.getBean("apifSmtpMailSender");
+
+        return sender;
+    }
+
+    private Boolean isSmtpMode(){
+        return   AbstractApifMailGlobalConfig.GC_MODE_SMTP_VALUE.equals(mailGlobalConfig.getGcMode()) ? true : false;
     }
 }

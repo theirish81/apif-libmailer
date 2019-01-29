@@ -1,7 +1,7 @@
-package com.apifortress.libs.mailer.globalconfig.impl;
+package com.apifortress.libs.mailer.config.impl;
 
 import com.apifortress.libs.mailer.exceptions.InvalidConfigException;
-import com.apifortress.libs.mailer.globalconfig.AbstractApifMailGlobalConfig;
+import com.apifortress.libs.mailer.config.AbstractApifMailGlobalConfig;
 
 public class DummyAbstractApifMailGlobalConfig extends AbstractApifMailGlobalConfig {
 
