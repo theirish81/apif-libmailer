@@ -5,7 +5,6 @@ import com.apifortress.libs.mailer.senders.IApifMailSender;
 import com.apifortress.libs.mailer.template.ApifMailTemplateEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -36,23 +35,35 @@ public class ApifMailer {
 
     private final Logger log = LoggerFactory.getLogger(ApifMailer.class);
 
-    @Autowired
-    ApifMailTemplateEngine templateEngine;
+    public static final String BEANS_FILE = "real-properties-smtp-beans.xml";
 
-    @Autowired
+    ApifMailTemplateEngine apifMailTemplateEngine;
+
     ApplicationContext applicationContext;
 
-    @Autowired
     AbstractApifMailGlobalConfig mailGlobalConfig;
 
+    public static ApifMailer instance;
+
+    public static ApifMailer getInstance(){
+        if (instance == null)
+            instance = new ApifMailer();
+        return instance;
+    }
+
+    private ApifMailer(){
+        applicationContext = new ClassPathXmlApplicationContext(BEANS_FILE);
+        apifMailTemplateEngine = (ApifMailTemplateEngine)applicationContext.getBean("apifMailTemplateEngine");
+        mailGlobalConfig = (AbstractApifMailGlobalConfig)applicationContext.getBean("globalConfig");
+    }
 
     public void send(List<String> recipients, String subject, String templateName, Map<String,Object> variables, String mime) throws Exception {
         for (String recipient : recipients){
-            sendMail(new ApifMail(recipient, subject, mime, "temp message"));
+            send(new ApifMail(recipient, subject, mime, "temp message"));
         }
     }
 
-    private void sendMail(ApifMail mail){
+    public void send(ApifMail mail){
         try {
             getApifSender().send(mail);
         }catch(Exception e){ log.error("Error while sending email to "+mail.getRecipient(),e);}

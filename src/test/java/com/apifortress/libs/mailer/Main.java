@@ -30,8 +30,10 @@ import java.util.stream.Stream;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        ApplicationContext context = new ClassPathXmlApplicationContext("real-properties-smtp-beans.xml");
-        ApifMailer apifMailer = (ApifMailer) context.getBean("mailer");
-        apifMailer.send(Stream.of("dbrach77@gmail.com", "dbrach77@gmail.com", "dbrach77@gmail.com").collect(Collectors.toList()),"foobar",null,null,"test/plain");
+        ApifMailer apifMailer = ApifMailer.getInstance();
+        apifMailer.send(new ApifMail("dbrach77@gmail.com","prova","text/html","prova"));
+
+        apifMailer = ApifMailer.getInstance();
+        apifMailer.send(new ApifMail("dbrach77@gmail.com","prova","text/html","prova"));
     }
 }
