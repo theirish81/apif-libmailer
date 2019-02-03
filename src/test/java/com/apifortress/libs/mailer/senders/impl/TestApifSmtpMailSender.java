@@ -73,7 +73,7 @@ public class TestApifSmtpMailSender {
     {
         ApifSmtpMailSender mailSender = propertiesContext.getBean(ApifSmtpMailSender.class);
         AbstractApifMailGlobalConfig gcCfg = propertiesContext.getBean("globalConfig", AbstractApifMailGlobalConfig.class);
-        assertEquals("PropertiesAbstractApifMailGlobalConfig", gcCfg.getClass().getSimpleName());
-        assertEquals(AbstractApifMailGlobalConfig.GC_MODE_SMTP_VALUE, gcCfg.get(AbstractApifMailGlobalConfig.GC_MODE));
+        assertEquals("PropertiesApifMailGlobalConfig", gcCfg.getClass().getSimpleName());
+        assertEquals(AbstractApifMailGlobalConfig.GC_MODE_SMTP_VALUE, gcCfg.get(AbstractApifMailGlobalConfig.GC_MODE_KEY));
     }
 }

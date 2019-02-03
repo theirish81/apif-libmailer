@@ -1,5 +1,6 @@
 package com.apifortress.libs.mailer.template;
 
+import com.apifortress.libs.mailer.template.impl.FsApifMailTemplate;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -40,5 +41,16 @@ public class TestApifTemplate {
         Map<String,Object> map = new HashMap<>();
         map.put("foo","bar");
         assertEquals("Foo <span>bar</span>", engine.parse(template,map));
+    }
+
+    @Test
+    public  void  testFsTemplateResolver() throws Exception{
+        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("real-properties-smtp-beans.xml");
+        FsApifMailTemplate fsApifMailTemplate = applicationContext.getBean("fsTemplate",FsApifMailTemplate.class);
+        fsApifMailTemplate.load("foobar.txt");
+        ApifMailTemplateEngine engine = applicationContext.getBean("apifMailTemplateEngine", ApifMailTemplateEngine.class);
+        Map<String,Object> map = new HashMap<>();
+        map.put("foo","bar");
+        assertEquals("Foo <span>bar</span>", engine.parse(fsApifMailTemplate,map));
     }
 }

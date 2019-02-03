@@ -6,7 +6,7 @@ import com.apifortress.libs.mailer.util.LoadProperties;
 
 import java.util.Properties;
 
-public class PropertiesAbstractApifMailGlobalConfig extends AbstractApifMailGlobalConfig {
+public class PropertiesApifMailGlobalConfig extends AbstractApifMailGlobalConfig {
 
     public static final String FILENAME = "global.properties";
 
@@ -16,7 +16,8 @@ public class PropertiesAbstractApifMailGlobalConfig extends AbstractApifMailGlob
     public void init() throws InvalidConfigException {
         Properties properties = LoadProperties.getProperties(filename);
 
-        put(GC_MODE, properties.getProperty(GC_MODE));
+        put(GC_MODE_KEY, properties.getProperty(GC_MODE_KEY));
+        put(GC_TEMPLATE_KEY, properties.getProperty(GC_TEMPLATE_KEY));
     }
 
 

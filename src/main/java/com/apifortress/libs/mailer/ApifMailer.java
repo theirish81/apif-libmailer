@@ -2,7 +2,9 @@ package com.apifortress.libs.mailer;
 
 import com.apifortress.libs.mailer.config.AbstractApifMailGlobalConfig;
 import com.apifortress.libs.mailer.senders.IApifMailSender;
+import com.apifortress.libs.mailer.template.AbstractApifMailTemplate;
 import com.apifortress.libs.mailer.template.ApifMailTemplateEngine;
+import com.apifortress.libs.mailer.template.impl.FsApifMailTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -43,6 +45,10 @@ public class ApifMailer {
 
     AbstractApifMailGlobalConfig mailGlobalConfig;
 
+    IApifMailSender mailSender;
+
+    AbstractApifMailTemplate mailTemplate;
+
     public static ApifMailer instance;
 
     public static ApifMailer getInstance(){
@@ -59,8 +65,12 @@ public class ApifMailer {
 
     public void send(List<String> recipients, String subject, String templateName, Map<String,Object> variables, String mime) throws Exception {
         for (String recipient : recipients){
-            send(new ApifMail(recipient, subject, mime, "temp message"));
+            send(recipient, subject , templateName,variables,mime);
         }
+    }
+
+    public void send(String recipient, String subject, String templateName, Map<String,Object> variables, String mime) throws Exception{
+            send(new ApifMail(recipient, subject, mime, apifMailTemplateEngine.parse(getApiTemplate(templateName),variables)));
     }
 
     public void send(ApifMail mail){
@@ -70,16 +80,31 @@ public class ApifMailer {
     }
 
     private IApifMailSender getApifSender(){
-        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("real-properties-smtp-beans.xml");
-        IApifMailSender sender = null;
+        if (mailSender == null) {
+            if (isSmtpMode())
+                mailSender = (IApifMailSender) applicationContext.getBean("apifSmtpMailSender");
+        }
 
-        if (isSmtpMode())
-            sender = (IApifMailSender) applicationContext.getBean("apifSmtpMailSender");
+        return mailSender;
+    }
 
-        return sender;
+    private AbstractApifMailTemplate getApiTemplate(String templateName) throws Exception {
+        if (mailTemplate == null) {
+            if (isFsTemplate()) {
+                mailTemplate = (FsApifMailTemplate) applicationContext.getBean("fsTemplate");
+                mailTemplate.load(templateName);
+            }
+        }
+
+        return mailTemplate;
     }
 
     private Boolean isSmtpMode(){
         return   AbstractApifMailGlobalConfig.GC_MODE_SMTP_VALUE.equals(mailGlobalConfig.getGcMode()) ? true : false;
     }
+
+    private Boolean isFsTemplate(){
+        return AbstractApifMailGlobalConfig.GC_TEMPLATE_VALUE.equals(mailGlobalConfig.getGcTemplate()) ? true : false;
+    }
+
 }
