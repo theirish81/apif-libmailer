@@ -35,6 +35,5 @@ public class GlobalConfigInjection {
         AbstractApifMailGlobalConfig gcCfg = propertiesContext.getBean("globalConfig", AbstractApifMailGlobalConfig.class);
         assertEquals("PropertiesApifMailGlobalConfig", gcCfg.getClass().getSimpleName());
         assertEquals("smtp", gcCfg.get(AbstractApifMailGlobalConfig.GC_MODE_KEY));
-        assertEquals("fs", gcCfg.get(AbstractApifMailGlobalConfig.GC_TEMPLATE_KEY));
     }
 }

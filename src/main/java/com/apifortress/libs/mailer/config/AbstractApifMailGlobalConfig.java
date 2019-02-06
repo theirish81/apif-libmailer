@@ -15,12 +15,8 @@ public abstract class AbstractApifMailGlobalConfig  extends HashtableExtended {
     public static final String GC_MODE_SMTP_VALUE = "smtp";
     public static final String GC_MODE_AMAZON_VALUE = "amazon";
 
-    public static final String GC_TEMPLATE_KEY = "gcTemplate";
-    public static final String GC_TEMPLATE_VALUE = "fs";
-
 
     public String getGcMode() {
         return getString(GC_MODE_KEY);
     }
-    public String getGcTemplate(){ return getString(GC_TEMPLATE_KEY);}
 }

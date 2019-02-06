@@ -4,7 +4,6 @@ import com.apifortress.libs.mailer.config.AbstractApifMailGlobalConfig;
 import com.apifortress.libs.mailer.senders.IApifMailSender;
 import com.apifortress.libs.mailer.template.AbstractApifMailTemplate;
 import com.apifortress.libs.mailer.template.ApifMailTemplateEngine;
-import com.apifortress.libs.mailer.template.impl.FsApifMailTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -90,10 +89,8 @@ public class ApifMailer {
 
     private AbstractApifMailTemplate getApiTemplate(String templateName) throws Exception {
         if (mailTemplate == null) {
-            if (isFsTemplate()) {
-                mailTemplate = (FsApifMailTemplate) applicationContext.getBean("fsTemplate");
-                mailTemplate.load(templateName);
-            }
+            mailTemplate = applicationContext.getBean("apifMailTemplate",AbstractApifMailTemplate.class);
+            mailTemplate.load(templateName);
         }
 
         return mailTemplate;
@@ -101,10 +98,6 @@ public class ApifMailer {
 
     private Boolean isSmtpMode(){
         return   AbstractApifMailGlobalConfig.GC_MODE_SMTP_VALUE.equals(mailGlobalConfig.getGcMode()) ? true : false;
-    }
-
-    private Boolean isFsTemplate(){
-        return AbstractApifMailGlobalConfig.GC_TEMPLATE_VALUE.equals(mailGlobalConfig.getGcTemplate()) ? true : false;
     }
 
 }

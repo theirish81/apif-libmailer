@@ -33,21 +33,9 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         ApifMailer apifMailer = ApifMailer.getInstance();
-       // apifMailer.send(new ApifMail("dbrach77@gmail.com","prova","text/html","prova"));
 
         Map<String,Object> map = new HashMap<>();
         map.put("foo","bar");
         apifMailer.send("dbrach77@gmail.com","foo","foobar.txt",map,"text/html");
-
-        map.clear();
-        map.put("foo","bar2");
-        apifMailer.send("dbrach77@gmail.com","foo2","foobar.txt",map,"text/html");
-
-        map.clear();
-        map.put("foo","bar3");
-        apifMailer.send("dbrach77@gmail.com","foo3","foobar.txt",map,"text/html");
-
-
-
     }
 }

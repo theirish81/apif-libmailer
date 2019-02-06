@@ -15,7 +15,7 @@
     <bean name="globalConfig" class="com.apifortress.libs.mailer.config.impl.PropertiesApifMailGlobalConfig" lazy-init="true">
         <property name="filename" value="global.properties"/>
     </bean>
-    <bean name="fsTemplate" class="com.apifortress.libs.mailer.template.impl.FsApifMailTemplate" lazy-init="true">
+    <bean name="apifMailTemplate" class="com.apifortress.libs.mailer.template.impl.FsApifMailTemplate" lazy-init="true">
         <property name="subpath" value="templates"/>
     </bean>
 </beans>

@@ -17,7 +17,6 @@ public class PropertiesApifMailGlobalConfig extends AbstractApifMailGlobalConfig
         Properties properties = LoadProperties.getProperties(filename);
 
         put(GC_MODE_KEY, properties.getProperty(GC_MODE_KEY));
-        put(GC_TEMPLATE_KEY, properties.getProperty(GC_TEMPLATE_KEY));
     }
 
 
