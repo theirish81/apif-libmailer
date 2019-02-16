@@ -36,6 +36,6 @@ public class Main {
 
         Map<String,Object> map = new HashMap<>();
         map.put("foo","bar");
-        apifMailer.send("dbrach77@gmail.com","foo","foobar.txt",map,"text/html");
+        apifMailer.send("theirish81@gmail.com","foo","foobar.txt",map,"text/html");
     }
 }
