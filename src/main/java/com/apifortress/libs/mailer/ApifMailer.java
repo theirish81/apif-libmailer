@@ -36,7 +36,7 @@ public class ApifMailer {
 
     private final Logger log = LoggerFactory.getLogger(ApifMailer.class);
 
-    public static final String BEANS_FILE = "real-properties-smtp-beans.xml";
+    public static String BEANS_FILE = "real-properties-smtp-beans.xml";
 
     ApifMailTemplateEngine apifMailTemplateEngine;
 
