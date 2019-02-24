@@ -37,16 +37,12 @@ public class ApifMailer {
     private final Logger log = LoggerFactory.getLogger(ApifMailer.class);
 
     public static String BEANS_FILE = "real-properties-smtp-beans.xml";
-
     ApifMailTemplateEngine apifMailTemplateEngine;
-
     ApplicationContext applicationContext;
-
     AbstractApifMailGlobalConfig mailGlobalConfig;
-
     IApifMailSender mailSender;
-
     AbstractApifMailTemplate mailTemplate;
+    String parsedMailTemplate;
 
     public static ApifMailer instance;
 
@@ -69,7 +65,11 @@ public class ApifMailer {
     }
 
     public void send(String recipient, String subject, String templateName, Map<String,Object> variables, String mime) throws Exception{
-            send(new ApifMail(recipient, subject, mime, apifMailTemplateEngine.parse(getApiTemplate(templateName),variables)));
+        send(new ApifMail(recipient, subject, mime, apifMailTemplateEngine.parse(getApiTemplate(templateName),variables)));
+    }
+
+    public void send(String recipient, String subject, String template, String mime) throws Exception{
+        send(new ApifMail(recipient, subject, mime, template));
     }
 
     public void send(ApifMail mail){
@@ -94,6 +94,13 @@ public class ApifMailer {
         }
 
         return mailTemplate;
+    }
+
+    public String getParsedTemplate (String templateName,Map<String,Object> variables) throws Exception {
+        AbstractApifMailTemplate mailTemplate = getApiTemplate(templateName);
+        mailTemplate.load(templateName);
+        parsedMailTemplate = apifMailTemplateEngine.parse(mailTemplate,variables);
+        return parsedMailTemplate;
     }
 
     private Boolean isSmtpMode(){
